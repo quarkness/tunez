@@ -1,0 +1,296 @@
+Tunez Installation instructions:
+(Written by Philip Lowman)
+
+NOTE!!
+------------
+
+Before you begin running commands you must first determine what you want Tunez
+to do for you.
+
+There are currently 5 supported modes:
+
+local-php
+    Local playback to your soundcard using a php script (requires a compiled
+    php binary)
+local-perl
+    Local playback to your soundcard using a perl script and provided PQueue
+    perl module
+ices
+    This is the newer icecast support (utilizes the perl support in ices
+    v0.3).  This also requires installing the PQueue perl module.
+    This does NOT work with OGG files (not a limitation of Icecast v2.0 but
+    rather that of ices itself.  Please email icecast@xiph.org and encourage
+    them to add support for OGG files to ices2)
+shout-php (not suggested, use ices)
+    Shout is executed to stream audio to a shoutcast (v1) server via php.
+    (requires a compiled php binary)
+shout-perl (not suggested, use ices)
+    Shout is executed to stream audio to a shoutcast (v1) server via perl.
+
+Dependencies:
+-------------
+The following dependencies are required depending on what mode you are in.
+Simply look above, determine your mode and if you see your mode listed you
+need that software.
+
+--
+(All)
+- Web server with php4 support (apache works)
+- MySQL (tested with 3.23.49, 4.0.13)
+- Album image support requires php compiled with libcurl support
+
+Debian packages:
+apt-get install php4 php4-mysql php4-curl apache mysql-server
+
+
+--
+(local-perl),(shout-perl)
+- PQueue perl module (included in PQueue directory)
+- DBD::Mysql perl module
+
+Debian packages:
+apt-get install libdbd-mysql-perl
+
+
+--
+(local-php),(shout-php)
+- You will require a php binary in this mode which supports mysql calls
+- Download from www.php.com
+
+--
+(shout-php),(shout-perl)
+- Icecast 1.3.12 ( http://www.icecast.org/download.html )
+- I think it comes with the shout command... not sure though
+
+Debian packages:
+apt-get install icecast-server icecast-client
+
+
+--
+(ices)
+- Icecast v2.0 and all of it's dependencies.  Most of them are listed in the
+  HOWTO-Icecast file.
+- Ices v0.3 (find it here: http://www.icecast.org/ices.php )
+
+Debian packages:
+apt-get install icecast2 libshout3 libshout3-dev
+(you will still have to install ices2 from source because the version packaged
+in unstable is not v0.3)
+
+
+Setup:
+------
+
+Please continue with the steps in this documentation.
+
+You must perform all steps with (all) next to them.  The remainder of the
+steps should be performed if they are relevant to your chosen configuration
+(local-perl), (local-php), (shout-perl), (shout-php), or (ices).
+
+
+(all) Moving your html/ directory
+---------------------------------
+
+1.  Move the contents of the html/ subdirectory in Tunez to the place where
+apache can display them.
+2.  It is strongly recommended to leave the rest of your tunez folder in a
+folder that is NOT web-accessible since sensitive data might be viewable to
+people on the web (tunezd.pl, etc.)
+
+
+(all) Database setup:  (if you've already setup a database you can skip these)
+---------------------
+
+1.  Ensure you have a root password set for mySQL.  Some installed
+distributions of mySQL come without a root password!  If you have not yet set
+a root password for your mySQL server you should do so with the following
+command:
+
+    $ mysql -uroot
+    mysql> SET PASSWORD FOR root@localhost=PASSWORD('yourpassword');
+    mysql> (hit Ctrl-d)
+
+    If it responds "Access denied" after you enter "mysql -uroot",
+    then you already have a password...
+    
+2.  Create a database called tunez or whatever you want to call it.
+
+    You can create the Tunez database with the following command or you can
+    simply use something like phpmyadmin if you aren't comfortable with this.
+
+    It is strongly recommended you do not use the "root" mysql user for Tunez.
+
+    $ mysql -uroot -p
+    MYSQL> CREATE DATABASE tunez;
+    MYSQL> GRANT ALL on tunez.* to tunez@localhost identified by 'your-password';
+    MYSQL> FLUSH privileges;
+    MYSQL> (hit Ctrl-D)
+
+
+(all) Tunez config script setup:
+--------------------------------
+
+1.  Edit config.inc.php in the root directory of Tunez and add your mysql
+username, password, and database there.
+2.  Change the $_CONF['mode'] option to your configuration mode of choice
+(local-php, local-perl, etc.)
+3.  Find the $_CONF['dirs'] array and add the directories you want shown on tunez to it.
+4.  Change anything else you like but be careful with some of the options. :)
+
+(all) tunez.inc.php setup:
+--------------------------
+
+1.  Edit tunez.inc.php in the html/ subdirectory and set the location for
+including the config.inc.php file:
+
+    # You must set the path to your confic.inc.php file here!  This should be
+    # the only thing you have to touch in this file
+    require_once("/path/to/config.inc.php");
+
+(local-php), (shout-php) Tunezd.php configuration:
+--------------------------------------------------
+1.  Set the path to tunez.inc.php in your tunezd.php file.
+
+
+(local-perl), (shout-perl) tunezd.pl configuration:
+-------------------------------------
+1.  Modify tunezd.pl and add the mysql username, password, etc. (we don't have
+a unified config file yet, sorry).
+
+2.  Ensure the paths to mpg123 and ogg123 are correct if you are using local
+mode.  Likewise ensure the paths to the shout binary are correct if you are
+using shout.
+
+3.  If you are using shout, enter the hostname and password of the icecast
+server you are using where prompted.
+
+
+
+(local-perl), (shout-perl), (ices) Compiling PQueue Perl Module:
+--------------------------------------------------------
+
+1.  Run the following commands to compile and install the PQueue perl module
+
+    $ cd PQueue
+    $ perl Makefile.PL
+    $ make
+    # make install (as root)
+
+2.  Why are we using a perl module when a perl script would suffice?
+
+    Two reasons
+        1.  Code reuse (check out ices.pm & tunezd.pl and compare with PQueue.pm)
+        2.  I was bored and wanted to learn something new
+
+
+(all) PHP Setup for webserver:
+------------------------------
+
+Locate your php.ini file (for your webserver).  On my system (Debian) this is
+at /etc/php4/apache/php.ini although YMMV
+
+1.  If you have lots of audio files find max_execution_time and make it longer
+to allow for better importing of songs into Tunez.  I suggest at least 2 
+minutes (120 seconds).  You can always change it back later when you're
+finished with the initial importing.
+
+        max_execution_time = 120
+
+2.  If you want HTTP uploading to work find this line and set it to the
+biggest audio file size you'll ever upload to Tunez.  By default it's only 2M.
+I suggest 10-15M although again, YMMV.
+
+        upload_max_filesize = 15M
+
+3.  Restart apache
+
+        Run:
+        /etc/init.d/apache restart      [ for debian ]
+        or
+        /etc/rc.d/init.d/apache restart [ for redhat/mandrake ] 
+
+
+(all) Compiling detach:
+-----------------------
+
+Detach is required if you want to be able to control spawning and killing
+processes from the webserver.  Simply run 'make' in the detach-1.2 directory.
+If for some reason you don't want any web control over the tunez daemon you
+can ignore this step.
+
+$ cd detach-1.2
+$ make
+
+
+(all) Compiling smixer:
+-----------------------
+
+We're using a program called smixer for the volume page.  If you want to be
+able to change the volume you need to compile it.  (Yes we know the directory
+is called tmixer, but it's really not worth changing at this point)
+
+$ cd tmixer
+$ make
+
+
+(local-perl),(local-php) Permissions:
+-------------------------------------
+
+If you forget this step the install script will bitch at you.
+
+Make sure your audio devices /dev/dsp and /dev/mixer have write permissions
+for the daemon (which will be launched by apache).  THIS IS IMPORTANT.  If you
+do an "ls -l" on /dev/dsp and /dev/mixer they MUST be writeable by the user
+which is running Apache, otherwise you will not hear sound.
+
+If you aren't going to be spawning the daemon from Apache you must ensure the
+user that is running tunezd.pl or tunezd.php has write permissions to /dev/dsp
+and /dev/mixer
+
+If you are the only user on your machine and don't care much about security
+execute these commands as root:
+    chmod o+rw /dev/dsp
+    chmod o+rw /dev/mixer
+This will allow any local user access to use your sound card. 
+
+
+(local-php), (shout-php) Remember you need a PHP binary!
+--------------------------------------------------------
+
+If you are using php as a daemon (tunezd.php) you will need a PHP binary in
+order to start it (which you may even need to compile if you can't find a
+packaged version of php for your distro which provides mysql support).
+
+Download PHP from www.php.net and after compiling set the $_CONF['php_binary']
+variable in your config.inc.php file to wherever your php binary is (probably
+/usr/local/bin/php)
+
+(all) Loading the database, and creating an admin account
+-----------------
+
+1.  Go to /admin/setup/admin_setup.php in a webbrowser and go through the
+wizard
+2.  After you have finished the wizard DELETE the setup directory or the
+admin_setup.php file!!!
+
+STEP 2 IS VERY IMPORTANT!!!!  If you don't delete this file then anyone can
+wipe your entire tunez database (not fun)!
+
+
+(ices) Ices setup:
+------------------
+
+Make sure you compiled the PQueue module and the detach binary above.
+
+Follow the directions in HOWTO-Icecast
+
+(all) Security:
+---------------
+
+Ensure that the configuration files in the root of your Tunez directory are
+not world readable and only readable by your webserver if you are on a system
+with multiple accounts.  This is because these files contain your database
+password which is a bad thing to share!
+    config.inc.php
+    ices.conf (if you are using Ices)
+    tunez.pl (if you are using Perl)

@@ -1,0 +1,19 @@
+Simple Mixer (smixer) v1.0.2 (2003-06-05) Copyright (C) 2000-2003 David Johnson
+
+  http://centerclick.org/programs/smixer/
+  smixer@centerclick.org
+
+
+smixer is a command-line and scriptable program to control and display
+the mixer volume levels on a sound card in linux (might work in other OSS
+supported OS's but I haven't tried any). smixer is ideal for setting
+mixer settings on startup or to switch between multiple configurations
+quickly.
+
+Distrubution of smixer is under the GNU GPL. See the "COPYING" and/or
+smixer.c file for more information.
+
+Usage is explained in the man page.
+
+
+

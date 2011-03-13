@@ -1,0 +1,82 @@
+Upgrade instructions
+
+From 1.20 to 1.21:
+------------------
+
+1. Unpackage the new copy of Tunez and copy the html/ directory to where your
+present Tunez webpages are.
+
+2. Copy and paste the following (which is part of the new config.inc.php file
+near the bottom of your existing config.inc.php file.  Ensure that you do it
+before the closing "?>" tag which should remain on the last line.
+
+# skip_sleeptime
+#       Allows the admin to set an appropriate number of seconds to sleep after
+#       a song skip occurs.  One second usually suffices for most systems although
+#       some admins may be able to set this to 0 and not have any problems
+$_CONF['skip_sleeptime'] = 1;
+
+# random_query controls how songs are picked when nothing is voted
+# for in the queue
+# * Set to unweighted for a completely random selection provided
+#   the song is not blocked from random play
+# * Set to weighted for a weighted random choice based on the
+#   number of times each song has been played
+$_CONF['random_query'] = "unweighted";
+
+3. Update the following files with the proper paths & database information
+if you are operating under the listed mode.  If you are using tunezd.pl or
+ices.pm note the new options and set them accordingly.
+    tunez.inc.php       (ALL: Fix path to config.inc.php!)
+    tunezd.pl           (local-perl shout-perl)
+    tunezd.php          (local-php  shout-php)
+    ices.pm             (ices)
+
+4. If you are using Perl you MUST remake the PQueue perl module as there have
+been significant bug fixes / improvements.
+
+    $ cd PQueue/
+    $ make
+    # make install
+
+5. Remake the programs in the tmixer/ & detach-1.2/ directories or copy the
+old directories to the new ones.
+
+6. If you are using ices don't forget to copy your ices.conf script to the new
+Tunez directory.
+
+7. Enjoy! And post bug reports on our Sourceforge project page:
+http://www.sourceforge.net/projects/tunez
+
+
+
+Amongst 1.20-pre and 1.20-rc versions:
+--------------------------------------
+Two options:
+1.  Find a patch file on the Tunez sourceforge site and follow the
+instructions in the release notes section
+
+2.  Perform a pseudo "new install" without doing all of the typical steps of
+an install:
+
+* Move your old Tunez directory out of the way and put your new Tunez
+directory in its place.
+* Move your old html directory out of the way and put the new Tunez html
+folder in its place
+* Copy over your config.inc.php from your old tunez folder
+* Edit your tunez.inc.php file and point it to your config.inc.php file again
+* If necessary reedit tunezd.pl
+* Remake the utilties in detach-1.2 and tmixer
+
+
+
+From 1.15 to 1.20:
+------------------
+* Follow the Tunez installation instructions for 1.20 but neglect going through
+the setup wizard as it will wipe your database.  You can use it to check your
+configuration but don't go beyond the first page!
+* Remove the admin_setup.php file in html/admin/setup/ (or just delete the
+whole directory
+* Run the SQL instructions in system/sql/updates/1_15_to_1_20.sql
+No actual schema modifications have taken place.  The only change is to the
+type of MySQL table (MyISAM) from the older style ISAM tables.

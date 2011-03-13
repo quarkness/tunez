@@ -1,0 +1,15 @@
+Revision history for Perl extension PQueue.
+
+0.21  Sun Sep 19 21:03:58 2004
+    - Packaged with Tunez 0.21
+    - Calling Perl script registers which extensions it wants to play when
+      class is invoked.  Songs which aren't of the desired extension found in
+      the priority queue are simply not played.
+    - Randomly selected songs are picked now only from allowed file extensions
+      and songs that aren't offline or deleted
+0.10  ??
+    - Packaged with Tunez 0.10
+0.01  Sat Jun 28 14:58:33 2003
+	- original version; created by h2xs 1.22 with options
+		-X -n PQueue
+

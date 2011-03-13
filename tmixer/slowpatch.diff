@@ -1,0 +1,65 @@
+--- ../smixer/src/smixer.c	2003-06-09 16:40:06.000000000 -0500
++++ src/smixer.c	2003-11-26 21:34:49.000000000 -0600
+@@ -41,6 +41,7 @@
+ #define SMIXER_MIXER_DEV          "/dev/mixer"
+ #define SMIXER_STR_SIZE           100
+ #define SMIXER_PLUS_MINUS_AMOUNT  5
++#define DELAY                     5000
+ 
+ 
+ #define max2(a,b) ( ((a) > (b)) ? (a) : (b) )
+@@ -183,6 +184,7 @@
+ 
+ static void simxer_write_mixer(char *filename, int do_all)
+ {
++  int step;
+   int mixer_fd=0, i, num_args, found;
+   FILE *config_file=NULL;
+   smixer_data_t data;
+@@ -266,28 +268,25 @@
+                       fprintf(stderr,"vol: value out of range\n");
+                       continue;
+                     }
+-                  
+-                  if ( ioctl(mixer_fd,MIXER_WRITE(i),&vol1) < 0 )
+-                    {
+-                      perror("write vol");
+-                      goto error_out;
+-                    }
+-                  
+-                  if ( ioctl(mixer_fd,MIXER_READ(i),&vol2) < 0 )
+-                    {
+-                      perror("comfirm vol");
+-                      goto error_out;
+-                    }
+-                  
++                  vol2 = (data.vols[i]&0xff) + ((data.vols[i]&0xff)<<8);
++                
++                  if (vol1 < vol2) {
++                    step = -0x101;
++                  }
++                  else { //if (vol2 < vol1) {
++                    step = 0x101;
++                  }
++                
++                  while (vol1 != vol2) {
++                      vol2 += step;
++                      if (ioctl(mixer_fd,MIXER_WRITE(i),&vol2) < 0) {
++                          perror("write vol");
++                          goto error_out;
++                      }
++                      usleep(DELAY);
++                  }
+                   data.vols[i] = vol2;
+-                  
+-                  if ( vol1 != vol2 )
+-                    {
+-                      fprintf(stderr,
+-                              "comparision failed: tried %i got %i\n",
+-                              vol1,vol2);
+-                      goto error_out;
+-                    }
++
+                 }
+             }
+           

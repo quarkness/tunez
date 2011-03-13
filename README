@@ -1,0 +1,15 @@
+   Tunez, a web-based mp3 jukebox
+   ------------------------------
+
+Tunez in an mp3/ogg jukebox that works with a voting system that users access
+through a web interface.  Each registered user can vote for the tracks he
+wants and the Tunez daemon will take care of playing the most popular songs
+either locally (through a soundcard) or through a streaming server, depending
+on the setup.
+
+The web interface is written entirely in php.  You have a choice between using
+perl or php daemons for the daemon.
+
+For help on how to install Tunez, please read the INSTALL file.
+
+http://tunez.sourceforge.net

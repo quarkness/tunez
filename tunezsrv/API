@@ -1,0 +1,42 @@
+Format
+< 4 character function code > < sizeof string > < string > 
+
+Other:
+    Format:
+      C: LSTS
+      S: List of Streams
+      
+      C: JOIN < stream > < capabilities provided > (mime types and such, and what I can do)
+      S: YES/NO
+
+      C: HELO < app name > < app version > < app grp > < passwd >
+      S: YES/NO
+
+Functions:
+
+
+   Basic:
+        Play File
+             FC: PLAY 
+             STR: filename
+        
+        Pause
+             FC: PAWS
+             
+        Movement
+             FC: MVMT
+             STR: < bool relative, absolute (0,1 respt.) >
+                  < signed int amount >
+             
+        Inc/Dec Volume
+             FC: VOLM
+             STR: < bool relative, abs. (t/f respt.) >
+                  < signed in value >
+        
+        Halt:
+             FC: HALT
+             
+   Later:
+        Index Applications with/without ID3
+        File Transfer
+        

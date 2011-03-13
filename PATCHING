@@ -1,0 +1,41 @@
+This is the PATCHING file.  It explains how to go about upgrading your version
+of Tunez to the latest one without reinstalling a lot of things.
+
+###
+## Instructions on how to patch an existing copy of Tunez
+###
+
+In order to patch your working copy of Tunez you must follow the below steps.
+If you're unsure about how to do this we highly recommend you manually upgrade
+my moving files around.
+
+1.  Make a backup of your Tunez HTML directory and your Tunez base directory
+just in case.
+
+2.  If you have Apache configured to automatically use the html/ folder in
+your Tunez directory to be the HTTPROOT you don't need to bother doing the
+next step and can skip to step 5.
+
+***NOTE*** You most likely copied or moved the html/ directory out of the way
+into your Apache HTTPROOT directory when you installed and need to procede to
+step 3.
+
+3.  Remove the old html/ directory in your Tunez directory if you left it
+there during the first install.  rm -fr html/
+
+4.  Use "ln -s" to create a symbolic link from your Tunez HTML directory which
+Apache is outputting to html/ in your Tunez folder.
+
+ln -s /var/www /usr/local/tunez/html
+
+(for example with /var/www as your Tunez HTML folder being displayed by Apache
+and /usr/local/tunez/html as the new target within wherever you keep the Tunez
+files)
+
+5.  Copy the patch file into your Tunez directory and cd into that directory.
+
+6.  Run 'zcat file.patch.gz | patch -p1'
+
+7.  You're all set, it should say all the patch files applied cleanly.  If
+something went wrong restore from your backups and let us know what happened.
+

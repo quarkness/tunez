@@ -1,0 +1,20 @@
+CREDITS
+
+Quarkness <idoesburg@outdare.nl> - Project Lead
+Philip Lowman <lowman@uiuc.edu> - Lead Developer
+Dennis Tighe <dmtighe@uiuc.edu> - Developer
+
+The tunezd deamon was originally based on 'jbplayd', which is part of Jukebox (c) by Roland Steinbach <roland@ratisbona.com>
+You can find it with http://freshmeat.net (that's where I found it)
+
+The code to read out ID3 and Ogg Vorbis tags is from the getid3 project
+located at http://getid3.sourceforge.net
+
+Thanks to the following people:
+
+Keith Amling                For playlist.php and a lot of really good advice
+Don Bennett, Howard Chu and Wes Craig	Authors of detach program, source can be found at http://www.guardian.no/~ssb/detach-1.2.tar.gz
+Cameron Brunner				For his constant feedback, keep it up!
+Barry R					    For writing original INSTALL, thanks dude, I would never have written it!
+Karel KerezMan				For his fix for multi-hyphens
+Martin Kaltoft				php version of tunezd

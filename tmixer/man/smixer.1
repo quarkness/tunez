@@ -1,0 +1,139 @@
+.\"
+.\" smixer.1 - a simple interface to /dev/mixer
+.\"
+.\" Copyright (C) 2000 David Johnson
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2, or (at your option)
+.\" any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+.TH SMIXER 1 "v1.0.3 - 2003-06-09" "smixer"
+.SH NAME
+smixer \- a simple interface to /dev/mixer
+.SH SYNOPSIS
+.nf
+smixer [-a] -p           (print settings)
+smixer [-a] --set [file] (set settings from file or stdin)
+.fi
+.SH DESCRIPTION
+smixer is a command-line and scriptable program to control and display
+the mixer volume levels on a sound card in linux. smixer is ideal
+for setting mixer settings on startup or to switch between multiple
+configurations quickly.
+.SH OPTIONS
+smixer may be invoked with the following command-line options:
+.TP
+.B -a
+When printing current settings include all devices.
+.TP
+.B -p
+Print out the current mixer settings, then exit.
+.TP
+.B --set \fIfile\fP
+Process commands from
+.I file,
+then exit.
+.TP
+.B --set
+Process commands from stdin (interactive or from a pipe), then exit.
+.PP
+
+.SH
+Command Synopsis
+These commands can be issued through an input file or from stdin when smixer is started in the
+.B --set
+mode
+
+.TP
+.B show
+Print out the current mixer settings.  This is equivilant to running 
+smixer with the 
+.B -p
+argument.
+
+.TP
+.B vol \fIname\fP \fIvalue\fP
+Set the volume for a specific input or output device.
+.I name
+is the name of the device as shown in the
+.B show
+command.
+.I value
+is the percent volume to set or ``-'' to decrease 5% or ``+'' to increase
+5%
+
+.TP
+.B recsrc \fIname\fP
+Set the recording source to a specific input device.
+.I name
+is the name of an input device as shown in the
+.B show
+command.  Only sources that are capable of input can be set.
+
+.TP
+.B help
+Print out a short description of the commands
+
+.TP
+.B quit
+End command processing and exit the program.
+
+.SH
+Example Commands
+
+.TP
+vol Vol 70
+Sets the master volume to 70%
+.TP
+vol CD 0
+Sets the CD input volume to 0%
+.TP
+vol pcm +
+Increases the pcm volume 5%
+.TP
+recsrc Mic
+Sets the recording source to the Mic input device
+
+.SH
+Example Output
+
+.PP
+ $ smixer -p
+ ID: Name       Act  Rec  Channels     Volume
+ --  --------   ---- ---- -------- ----------
+  0: Vol        Yes  Yes  Stereo   25700 100%
+  1: Bass       Yes       Stereo   12850  50%
+  2: Trebl      Yes       Stereo   12850  50%
+  4: Pcm        Yes  Yes  Stereo   22616  88%
+  5: Spkr       Yes       Mono         0   0%
+  6: Line       Yes  Yes  Stereo       0   0%
+  7: Mic        Yes  Yes* Mono         0   0%
+  8: CD         Yes  Yes  Stereo       0   0%
+ 11: Rec        Yes       Stereo       0   0%
+ 13: OGain      Yes  Yes  Stereo    1285   5%
+ 14: Line1      Yes  Yes  Stereo       0   0%
+ 15: Line2      Yes       Stereo   25700 100%
+ 16: Line3      Yes       Stereo   25700 100%
+ 17: Digital1   Yes       Stereo       0   0%
+ 18: Digital2   Yes       Stereo   25700 100%
+ 20: PhoneIn    Yes  Yes  Mono         0   0%
+ 24: Monitor         Yes  Mono         0   0%
+
+
+.SH
+BUGS
+.PP
+E-mail bug reports to
+.BR smixer@centerclick.org .
+smixer has been tested on several linux systems and might work
+in other OSS supported OS's aswell. Newer versions can be obtained from
+.BR http://centerclick.org/programs/smixer/

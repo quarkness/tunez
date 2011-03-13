@@ -1,0 +1,136 @@
+2004-11-14  Philip Lowman  <philip@yhbt.com>
+
+	* UPGRADE: Howto from 1.20 to 1.21
+
+2004-11-14  Philip Lowman  <philip@yhbt.com>
+
+	* html/admin/admin_daemon.php: Some issues with newer code where -INT
+	isn't good enough and we have to do a -KILL (with tunezd.pl & tunezd.php)
+
+2004-11-14  Philip Lowman  <philip@yhbt.com>
+
+	* INSTALL: Improved wording
+
+2004-11-14  Philip Lowman  <philip@yhbt.com>
+
+	* config.inc.php: Added non-mandatory option which allows the local-php
+	mode to choose which random algorithm to use.
+
+2004-11-13  Philip Lowman  <philip@yhbt.com>
+
+	* system/classes/PQueue.class.php: Makes the new random selection SQL work
+	in PHP but requires a config.inc.php variable to be set.
+	* tunezd.php: Now supports the new PQueue.class.php.  Also fixed a bug
+	with ogg vorbis playback not working!
+
+2004-11-13  Adi Linden  <alinden@users.sourceforge.net>
+	[PATCH]
+
+	* system/classes/song.class.php: OGG vorbis track numbers & genre IDs are
+	supported now (thanks to Adi Linden's patch
+	https://sourceforge.net/forum/forum.php?thread_id=1177457&forum_id=6592)
+	
+2004-11-13  Manik Surtani  <loonix@users.sourceforge.net>
+	[PATCH]
+	
+	* html/admin/admin_updateDb.php: Fixes SQL issue where undesired directories
+	are selected for update (Closes bug #1012797).
+
+2004-11-13  Philip Lowman  <philip@yhbt.com>
+
+	* PQueue/PQueue.pm:
+	- Merged in the weighted random algorithm Henrik Wejdmark came up with
+	- When instantiating PQueue can now specify government_type &
+	random_query_type and appropriate SQL queries are set.
+	- government & random_query can be specified to manually override queries
+	- timesPlayed is now returned when songs are picked so it can be displayed
+	- if an unallowed media type enters the queue it will be removed and an
+	error message outputted if it reaches the top of the queue.
+	* ices.pm: Modified to use new PQueue.pm options
+	* tunezd.pl: Modified to use new PQueue.pm options
+
+2004-11-13  Philip Lowman  <philip@yhbt.com>
+
+	* html/admin/admin_volume.php: Closes patch #1049939 on SourceForge
+	although no patch attached.  Fixes issue with last element of
+	$_CONF['mixer_devices'] array not showing up on volume page.
+
+2004-09-19  Philip Lowman  <philip@yhbt.com>
+
+	* PQueue/PQueue.pm:
+	- Now restricts random song SQL to allowed filetypes
+	- Changes allowed_filetypes layout to be a proper hash
+	* PQueue/Changes: updated the PQueue changelog
+	* tunezd.pl: Uses the new $allowed_filetypes hash
+	* ices.pm: Uses the new $allowed_filetypes hash
+
+2004-08-17  Philip Lowman  <philip@yhbt.com>
+
+	* tunezd.pl: More verbose output, eliminated superfluous paramater in
+	playsong()
+
+2004-08-17  Philip Lowman  <philip@yhbt.com>
+
+	* ices.pm: Only registers mp3 filetype with PQueue now so OGGs aren't
+	returned
+
+2004-08-17  Philip Lowman  <philip@yhbt.com>
+
+	* PQueue/PQueue.pm:
+	Added option to module to limit filetypes returned
+	Fixed government SQL and random-gen SQL in top() to eliminate the
+	possibility of selecting a song which is offline or scheduled for deletion
+	Fixed email addresses / URLs
+
+2004-08-17  Philip Lowman  <philip@yhbt.com>
+
+	* PQueue/README: Updated version to 1.21
+
+2004-08-16  Philip Lowman  <philip@yhbt.com>
+
+	* html/admin/admin_updateDb.php: Fixed include as per TbNobody's request
+	(assuming it improves Windows compatability)
+
+2004-08-16  CakTux  <caktux@users.sourceforge.net>
+	[PATCH]
+	
+	* html/tunez.inc.php: Added option for setting playInRandomMode en masse
+	* html/admin/admin_edit_record.php: HTML to enable above
+
+2004-08-16  Philip Lowman  <philip@yhbt.com>
+	
+	* config.inc.php: New option for number of seconds to sleep when skipping
+	a song
+	* html/skip_random.php: Now uses $_CONF['skip_sleepsecs'] for sleep call
+	* html/admin/admin_skip.php: Now users $_CONF['skip_sleepsecs'] for sleep
+	call
+
+2004-08-16  Henrik Wejdmark  <sepahewe@users.sourceforge.net>
+	[PATCH]
+
+	* html/tunez.inc.php: If song length isn't available reload is displayed
+	as 1:00 instead of 60
+
+2004-08-16  Philip Lowman  <philip@yhbt.com>
+
+	* html/tunez.inc.php: If nothing is playing timeleft() returns -5000
+	which allows header.php to avoid setting a metarefresh
+	* html/header.inc.php: If timeleft() returns a value around 0 the metarefresh
+	is set to 5 seconds, otherwise it remains the same as before.  If the
+	value is way below -5 the metarefresh isn't set at all.
+
+2004-08-16  Henrik Wejdmark  <sepahewe@users.sourceforge.net>
+	[PATCH]
+
+	* html/tunez.inc.php: Changed refresh time to 60 seconds for songs without
+	known song length.
+
+2004-08-16  Henrik Wejdmark  <sepahewe@users.sourceforge.net>
+	[PATCH]
+
+	* html/tunez.inc.php: Fixed absolute image paths
+
+2004-08-16  Philip Lowman  <philip@yhbt.com>
+
+	* Changelog: Moved to ChangeLog.public
+	* ChangeLog: Created an actual ChangeLog.

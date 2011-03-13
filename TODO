@@ -1,0 +1,35 @@
+TODO & BUGS:
+
+Near Future:
+
+- More icons especially for up/down sorting of search results
+- Prevent tunezd from starting multiple times (use a lockfile)
+- Merge Ben's volume thing for main page?
+- Centralized config file (config.inc.php).  Find a way to source this file
+    with Perl.
+- Stop relying on mysql PASSWORD() function for hashing (because it sucks!)
+
+Future:
+
+- Add advertisement support
+- Finish 'banked' voting mode implementation
+- Text 2 Speech
+- Make a pretty looking page for "permission denied"
+- Make sure permissions on admin-type pages are checked for
+- Show number of votes per song in playlist
+- Examine alternatives to reloading the entire page after doing something very
+  simple.  Perhaps just loading a new void page and not updating or
+  doing it with Javascript..? (cclausen)
+- A way to allow a "Representative" to vote on your behalf (ideally this would
+  be glued together from the random code).  When a user logs in if they so
+  specified an "Agent" could be instructed to vote on their behalf based on
+  what they have voted for before. (lowman)
+- Enhance Amazon.com guessing support...
+- Recode history.php so it displays who played the song when... (also to
+  charts.php).  In general make the output nicer.
+- Also allow uploading of pictures from upload.php?
+- Add uploaded_timestamp field to songs table to show when song was uploaded
+- Add some way to normalize songs...?
+- Add support for directly modifying the playlist in "dictator mode"
+- Implement FULLTEXT searches
+

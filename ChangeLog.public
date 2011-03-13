@@ -1,0 +1,249 @@
+Please report Suggestions/Bugs!
+
+Tunez Changelog:
+
+v1.21
+	(November 14th, 2004)
+	* Added a weighted random mode for picking random songs which makes it
+	more likely that songs which are played more get played (Henrik Wejdmark)
+	* Improved PQueue so that calling script can set the filetypes it is
+	capable of playing.  Guarantees that tunezd.pl or Ices.pm only registers
+	the filetypes it can play.
+	* Improved PQueue so that calling script can specify government type &
+	how random songs are picked.
+	* Fixed a bug in PQueue where offline/deleted files in Tunez were
+	potentially being selected for random play
+	* Fixed a bug where unselected paths were being traversed in
+	admin_updateDb.php anyways.  (Manik Surtani)
+	* Fixed some images which were hardcoded (Henrik Wejdmark)
+	* Changed refresh time to 60 seconds for songs without known song length &
+	fixed countdown timer to display "1:00".  (Henrik Wejdmark)
+	* Added option for setting songs to play or not play in random mode en
+	masse via admin_edit_record (Caktux)
+	* Fixed bug which prevented last mixer device in $_CONF['mixer_devices']
+	array in config.inc.php from showing up on volume changing page.
+	* Added functionality for parsing track numbers & genres from OGG's (Adi
+	Linden)
+	* Fixed bug preventing playback of OGG files in PHP Local mode.
+
+v1.20
+    (April 6th, 2004)
+    * Fixed bug in skip_random.php which allowed any privileged user to be
+    able to skip any song even if it wasn't random.
+    * New random order voting option when multiple songs are selected via
+    checkboxes (based on patch from Keith Amling <amling at uiuc dot edu>
+    * Several SQL injection vulnerabilities discovered.  Audit of entire
+    codebase for SQL injection vulnerabilities complete.
+
+v1.20-rc1
+    (April 4th, 2004)
+    * Fixed bug in amazon.inc.php due to Amazon page layout change
+    * Improved albumpics.php so choices are presented in a table with
+    remainder of Tunez UI
+    * Fixed CSS issue so space between lines in tables isn't there anymore.
+    Makes layout much more compact and easier to read.
+    * Fixed several remaining bugs involving the referencing of paths while
+    executing PHP code within admin/ folder
+
+v1.20-pre2
+    (Febuary 2nd, 2004)
+    * Fixed various minor bugs
+    * Fixed many possible SQL injection problems
+
+v1.20-pre1
+    (January 26th, 2004)
+    * Major directory restructuring to improve security and navigability
+    * Setup script which installs schema and adds an admin account
+    * Verified Icecast v2.0 support with Ices v0.3 (and provided a HOWTO)
+    * Cleaned up queue display and added "voting" option to appear when user
+      can vote for song
+    * Added option to admin_updateDb to allow specification of paths to
+      include in the update.
+    * Added a playlist page which shows more information about the queue (code
+      submitted by Keith Amling <amling at uiuc dot edu>)
+    * Enhanced Browse by Album page (order by Artist Name or Album Name, album
+      cover art view).  Bulk of code submitted by Ben Staffin <staffin at uiuc
+      dot edu>
+    * Album cover assigning mode now allows assigning songs with "Unknown"
+      album to the album chosen by the user.
+    * Enhanced searching options off of main page
+    * Better crossplatformable Start/Stop daemon support (no more killall)
+    * Patched included smixer binary to gradually decrease volume (instead of
+      an instant drop or increase in volume.
+    * Added configuration options so user can decide which volume sliders they
+      want to show in admin_volume.php.
+    * Major security fixes (primarily SQL injection problems)
+    * Lots of annoying bugs fixed
+
+v1.15
+    (July 5th, 2003)
+
+    * Fixed problem with Tunezd.php not playing things properly
+    * Fixed bug where logging out in order to change songs/page in preferences
+      is required.
+    * Enhanced icecast support so the user can click on a link in index.php to
+      cause their audio player to start streaming from the shoutcast server
+    * Improved PQueue class to be able to take a variable government type and
+      eliminated prototyping error message
+    * Fixed bug with ogg's not importing correctly
+    * Improved songs table making filename support > 255 characters and other
+      minor improvements not requiring a database reload.
+    * Merged patch from Chris Clausen <cclausen@acm.org> for total time length
+      in the queue
+    * Merged "unvote" image from Ben Staffin <staffin@uiuc.edu>
+    * Using basename() instead of my own function in admin_updateDb
+
+v1.1
+    (June 30th, 2003)  "Tunez is back!" release
+
+    * Note: This is a development release.  Please report bugs on SourceForge.
+    You absolutely must start off with a fresh database!
+
+    * Support for local playback (OSS) via Perl, PHP or streaming playback via
+      Icecast v1 (shout) & Icecast v2 (ices)
+    * ID3v1/ID3v2 (2.2, 2.3, 2.4), OGG tagging support added
+    * Finished admin_edit_record / admin_db_action which allow for individual
+      or group actions which can be performed on songs:
+        - editing
+        - voting
+        - read ID3/OGG tag into database
+        - export database record to ID3/OGG
+        - mark file for deletion
+        - hide file from view
+    * Support for HTTP Uploading
+    * Album cover support which grabs links to images off of Amazon.com
+      (requires php with libcurl support)
+    * Added a completely new session based login system with a configurable
+      timeout amount and the ability to have a permanent cookie stored on your
+      system to remember you for all future accesses.
+    * Added better searching capabilities (artist, album, uploader, songtitle,
+      all)
+    * Comprehensive user/group editor with configurable permissions
+    * Admin_updateDb can now handle finding files that have been moved around
+      and recategorized manually (to a certain extent).
+    * A large amount of the code has been written to be object oriented
+    * Added more fields like filesize, uploader, etc. to the songs table
+    * Volume controls have been improved greatly
+    * Created an artists and albums table and grouped that data there rather
+      than all in the songs table.
+    * Added the ability to allow users to cancel their votes individually or
+      en masse (when they log out).  Administrators can also perform en masse
+      cancellation <thinking evil thoughts>
+    * Added the ability to allow skipping of random songs
+    * Added a priority queue class implementation which now derives the queue
+      from the votes but later on would make raw manipulation of the queue
+      possible (ie put Tunez in a 'dictator' mode).
+    * Added offline mode which prevents song data from being wiped if songs
+      are on removeable media or NFS and an update_Db occurs.
+    * Added an up to date boolean in the songs table to determine which songs
+      need to be updated.  Songs are updated by running admin_sync.php
+    * Added a status field to the database to allow for managing state of
+      songs (marked for deletion, hidden, offline, normal)
+    * Eliminated all dependencies on database name
+    * Sorting via Songtitle, Artist Name, and Album Name now possible within
+      searches
+    * Tunez works fine with register globals off.
+
+v1.0
+	(June 2001 probably)
+	Loads fixed, and tidied up, much cleaner way of doing things
+	- php4 required since sessions are used to remember user data
+	- extended charts, queries history table that has been around for long
+	  but was never used :)
+	- tightened security
+	- Data model has probably changed again? ;)
+	- added MOODS, order your songs in moods, like genre was supposed to be,
+	  but I scrapped that, cause ID3 data is very unreliable
+	- Removed ID3 stuff, code is still there though
+	- Added hardcore query interface for admins, be careful, no checking
+	  for update, or delete statements etc
+	- Have I mentioned that numerous other things are fixed? 
+	
+
+v0.9
+	(April 9th 2001)
+	Loads fixed, and tidied up. 
+	- dumped old layout completely
+	- html now 4.01 strict
+	- Changed data model somewhat
+	- ability to block song in random mode
+	- rewrote stuff
+	- forgot what I did really, too long since last release
+
+v0.8
+	()
+	Again, loads of new things added
+	- Added history table for logging and statistics
+	- Support for ID3 tags is in!
+	- Browse by genre added
+	- New tunezd! requires php binary (initial version by Martin Kaltoft)
+	- Radically changed the update database file
+	- Added id3 edit file, to edit id3 tags
+	- Fixed lots of bugs, rewrote some of the code
+	- Data Model changed (extra fields in song table: genre, year, album
+
+
+v0.7
+	(May 23rd 2000)
+	Loads of new feautures, loads of bugs!
+	- Now works with a user system, users can sign up for an account.
+	- Totally changed lay-out
+	- Fixed lots of bugs, rewrote some of the code
+	- Data Model changed
+	- Now logs on as tunez, no password
+	- Added abillity to see, who voted for what song
+
+v0.6:
+	Not Released
+	
+v0.55:
+	(April 10th 2000)
+
+	Fixed things / added features:
+	- Fixed a few bugs, thanks everybody for your bug reports
+	- Added stream support using iceCast
+	- Removed stream support using NetStreamer (I never got it working)
+
+v0.5:
+	(February 28th 2000)
+
+	Fixed things / added features:
+	- New way of voting, now reloads same page and votes at the same time
+	- Changed the layout a bit
+	- Added Recent Files pages which lists recently added files
+
+v0.4:
+	(February 18th 2000)
+
+	Fixed things / added features:
+	- Added Search
+	- Optimized code, why 5 routines for kinda the same thing
+	- Changed the layout a bit
+	- Theoretical support for streaming using NetStreamer :)
+	- Removed addAll.php, use updateDb.php instead
+
+v0.3:
+	(February 14th 2000)
+
+	Fixed things / added features:
+	- Added (sloppy) support for subdirectories.
+	- 'Smart' updating of song database (updateDb.php)
+	- Top 10 now actually displays 10 songs :)
+
+v0.2:
+	(February 8th 2000)
+
+	Fixed things / added features:
+	- Voting actually works now!
+	- Supports songs with single quotes (addAll.php)
+	- Remembers how many times a song is played
+	- Top 10 added
+	- index.php refreshes itself after 20 seconds
+
+v0.1:  (February 7th 2000) Initial release
+
+TODO
+
+	- Better sub directory support
+	- Search function
+	- Nicer layout

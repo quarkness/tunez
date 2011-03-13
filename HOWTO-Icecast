@@ -1,0 +1,60 @@
+Howto configure Tunez with Icecast:
+
+0.  Make sure you setup Tunez first with instructions in the INSTALL
+document.  Then procede here when it tells you.
+
+1.  Ensure that the following libraries are installed (including the
+development packages if you aren't compiling from source):
+    
+    libxml2
+    libxslt
+    libvorbis
+    libogg
+    libperl
+    libshoutcast
+
+2.  Download Icecast version 2.0 from http://www.icecast.org
+3.  Untar Icecast in a directory of your choice and follow the installation
+instructions included.  You will need to copy the icecast example
+configuration file and tweak it for your needs.  The encoding password you
+choose for your Icecast server must be identical to the password you will
+store in the ices.conf file later.
+4.  Download ices v0.3 from http://www.icecast.org/ices.php
+5.  Ensure that after running the ./configure script you have something that
+looks like this:
+
+Features:
+  XML     : yes
+  Python  : no
+  Perl    : yes
+  LAME    : yes
+  Vorbis  : yes
+
+(having perl support is paramount here)
+You'll need the libperl-dev package.
+
+6.  Run make and make install for ices.
+7.  Copy conf/ices.conf.dist from the ices tarball into your base Tunez
+directory and rename it to ices.conf
+8.  Edit ices.conf in your Tunez directory and make the following changes:
+
+    8a.  In the playlist section:
+        <!-- One of builtin, perl, or python. -->
+            <Type>perl</Type>
+            
+    8b.  In the stream section, make sure you modify the hostname, port, and
+    password to match the configuration on the icecast server you're streaming
+    to.  (don't use hackme or letmein as your password).  Also feel free to
+    change around the other stuff like name of your stream, etc.
+
+9.  *** EDIT ices.pm in your Tunez directory and enter the mySQL
+username/password/hostname/database.  ***
+
+10.  Try starting it manually by running ices from within your
+Tunez base directory (the one with ices.pm and ices.conf).  You must run it
+within this directory.  Fire up your favorite audio player and insure that you
+can hear the stream.
+
+11.  Once you know that ices is working fine from the command line make sure
+that Tunez can start/stop it with start/stop daemon.
+
